@@ -1,4 +1,4 @@
-import type { ProductSummary } from "./shopify";
+import type { Product, ProductSummary } from "./shopify";
 
 // Helpers that read the composition conventions out of product tags:
 // `composition-N`, `coming-soon`, and scent notes as `top:` / `heart:` / `base:`.
@@ -42,6 +42,19 @@ export function getShortName(product: ProductSummary): string {
 /** "No.1 Woody Vetiver", as the scent header and the carton print it. */
 export function compositionLabel(number: number, title: string): string {
   return `No.${number} ${title}`;
+}
+
+/** The variant's Size option, e.g. "50 ml". */
+export function getSize(product: Product): string | undefined {
+  return product.variants[0]?.selectedOptions.find((o) => o.name === "Size")?.value;
+}
+
+const ML_PER_FL_OZ = 29.5735;
+
+/** "50 ml" → "50 ml / 1.7 fl oz", as printed on the carton. */
+export function withFluidOunces(size: string): string {
+  const ml = Number.parseFloat(size);
+  return Number.isNaN(ml) ? size : `${size} / ${(ml / ML_PER_FL_OZ).toFixed(1)} fl oz`;
 }
 
 /** Swatch color token from globals.css (`--color-composition-N`). */

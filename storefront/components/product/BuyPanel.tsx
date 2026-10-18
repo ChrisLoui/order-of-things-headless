@@ -1,5 +1,5 @@
-import type { Composition, CompositionStatus, ScentNotes } from "@/lib/composition";
-import { swatchColor } from "@/lib/composition";
+import type { Composition, ScentNotes } from "@/lib/composition";
+import { getSize, swatchColor } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/shopify";
 import { Assurances } from "./Assurances";
@@ -20,19 +20,16 @@ export function BuyPanel({
   product,
   compositionNumber,
   scentLabel,
-  status,
   compositions,
   notes,
 }: {
   product: Product;
   compositionNumber: number;
   scentLabel: string;
-  status: CompositionStatus;
   compositions: Composition[];
   notes: ScentNotes | null;
 }) {
-  const variant = product.variants[0];
-  const size = variant?.selectedOptions.find((o) => o.name === "Size")?.value;
+  const size = getSize(product);
   const productType = product.productType;
 
   return (
@@ -81,11 +78,7 @@ export function BuyPanel({
         </div>
 
         <div className="mt-5 lg:mt-4">
-          <PurchaseForm
-            variantId={variant?.id}
-            price={variant?.price ?? product.priceRange.minVariantPrice}
-            status={status}
-          />
+          <PurchaseForm />
         </div>
 
         {notes && (

@@ -5,10 +5,13 @@ import { BuyPanel } from "@/components/product/BuyPanel";
 import { BrandGrid } from "@/components/product/BrandGrid";
 import { DesktopGallery } from "@/components/product/DesktopGallery";
 import { MobileGallery } from "@/components/product/MobileGallery";
+import { PurchaseProvider } from "@/components/product/PurchaseContext";
+import { StickyBuyBar } from "@/components/product/StickyBuyBar";
 import {
   compositionLabel,
   getCompositionNumber,
   getScentNotes,
+  getSize,
   getStatus,
   toCompositions,
 } from "@/lib/composition";
@@ -39,34 +42,47 @@ async function ProductHero({ params }: Pick<PageProps<"/products/[handle]">, "pa
 
   const notes = getScentNotes(product);
   const scentLabel = compositionLabel(number, product.title);
+  const variant = product.variants[0];
 
   return (
-    <section className="relative mx-auto max-w-[1440px] lg:grid lg:grid-cols-[780fr_660fr] lg:items-start">
-      <BrandGrid className="hidden lg:block" />
-      <div className="relative">
-        <DesktopGallery
-          className="hidden lg:flex"
+    <PurchaseProvider
+      variantId={variant?.id}
+      price={variant?.price ?? product.priceRange.minVariantPrice}
+      status={getStatus(product)}
+    >
+      <section className="relative mx-auto max-w-[1440px] lg:grid lg:grid-cols-[780fr_660fr] lg:items-start">
+        <BrandGrid className="hidden lg:block" />
+        <div className="relative">
+          <DesktopGallery
+            className="hidden lg:flex"
+            compositionNumber={number}
+            scentLabel={scentLabel}
+            notes={notes}
+          />
+          <MobileGallery className="lg:hidden" />
+        </div>
+        <BuyPanel
+          product={product}
           compositionNumber={number}
           scentLabel={scentLabel}
+          compositions={toCompositions(products)}
           notes={notes}
         />
-        <MobileGallery className="lg:hidden" />
-      </div>
-      <BuyPanel
-        product={product}
+      </section>
+      <StickyBuyBar
         compositionNumber={number}
         scentLabel={scentLabel}
-        status={getStatus(product)}
-        compositions={toCompositions(products)}
-        notes={notes}
+        productType={product.productType}
+        size={getSize(product)}
       />
-    </section>
+    </PurchaseProvider>
   );
 }
 
 export default function ProductPage(props: PageProps<"/products/[handle]">) {
   return (
-    <main>
+    // Bottom padding so the sticky buy bar never covers the end of the page.
+    <main className="pb-[76px] lg:pb-20">
       <Suspense>
         <ProductHero params={props.params} />
       </Suspense>
