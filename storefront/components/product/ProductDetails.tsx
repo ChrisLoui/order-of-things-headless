@@ -1,4 +1,3 @@
-import type { ComponentType, SVGProps } from "react";
 import {
   CartonIcon,
   ClockIcon,
@@ -15,16 +14,11 @@ import {
   WristIcon,
 } from "@/components/icons";
 import { Accordion } from "./Accordion";
+import { DetailGrid, type Detail } from "./DetailGrid";
 
 // Details accordion content (Figma 14:3381, open states). The copy is
 // composition-agnostic except "The composition" intro, which is written per
 // composition. It lives here until it moves into Shopify metafields.
-type Detail = {
-  Icon: ComponentType<SVGProps<SVGSVGElement>>;
-  title: string;
-  text: string;
-};
-
 const COMPOSITION_INTROS: Record<string, string> = {
   "no-1-woody-vetiver":
     "Opens bright with bergamot, turns green and aromatic, and dries down to a dry, woody vetiver that stays close to the skin.",
@@ -62,21 +56,6 @@ const INGREDIENTS = [
 
 function Intro({ children }: { children: string }) {
   return <p className="mb-4 text-body-m">{children}</p>;
-}
-
-/** Three columns under a hairline: icon, uppercase label, sub-line. */
-function Columns({ items }: { items: Detail[] }) {
-  return (
-    <ul className="grid grid-cols-3 gap-4 border-t border-hairline pt-4">
-      {items.map(({ Icon, title, text }) => (
-        <li key={title} className="flex flex-col gap-2">
-          <Icon />
-          <p className="text-label">{title}</p>
-          <p className="text-body-s opacity-75">{text}</p>
-        </li>
-      ))}
-    </ul>
-  );
 }
 
 /** Stacked rows separated by hairlines: icon beside a title and sub-line. */
@@ -135,7 +114,7 @@ export function ProductDetails({ handle }: { handle: string }) {
           content: (
             <>
               <Intro>After bathing, while skin is still warm.</Intro>
-              <Columns items={HOW_TO_WEAR} />
+              <DetailGrid items={HOW_TO_WEAR} rule />
             </>
           ),
         },
@@ -144,12 +123,12 @@ export function ProductDetails({ handle }: { handle: string }) {
           content: (
             <>
               {compositionIntro && <Intro>{compositionIntro}</Intro>}
-              <Columns items={COMPOSITION} />
+              <DetailGrid items={COMPOSITION} rule />
             </>
           ),
         },
         { title: "Ingredients", content: <Ingredients /> },
-        { title: "Packaging", content: <Columns items={PACKAGING} /> },
+        { title: "Packaging", content: <DetailGrid items={PACKAGING} rule /> },
         { title: "Shipping & returns", content: <Rows items={SHIPPING} /> },
       ]}
     />

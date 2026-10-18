@@ -46,12 +46,15 @@ export function ScentNotesChart({ notes }: { notes: ScentNotes }) {
           <span className="lg:hidden">0</span>
           <span className="hidden lg:inline">Spray</span>
         </span>
-        <span className="absolute top-2 -translate-x-1/2" style={{ left: `${GRID_LINES[1]}%` }}>
-          1 h
-        </span>
-        <span className="absolute top-2 -translate-x-1/2" style={{ left: `${GRID_LINES[2]}%` }}>
-          4 h
-        </span>
+        {(["1 h", "4 h"] as const).map((label, i) => (
+          <span
+            key={label}
+            className="absolute top-2 -translate-x-1/2"
+            style={{ left: `${GRID_LINES[i + 1]}%` }}
+          >
+            {label}
+          </span>
+        ))}
         <span className="absolute top-2 right-0">8 h +</span>
       </div>
 
