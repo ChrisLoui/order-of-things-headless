@@ -17,7 +17,7 @@ export function Manifesto() {
           src="/images/section-manifesto-water.jpg"
           alt=""
           fill
-          sizes="(min-width: 1440px) 720px, (min-width: 1024px) 50vw, 100vw"
+          sizes="(min-width: 1440px) 1260px, (min-width: 1024px) 88vw, 100vw"
           // Desktop crops in tight on the hair over the water at the photo's left
           // edge (desktop-full.png); mobile shows the whole frame.
           className="object-cover lg:origin-left lg:scale-[1.75]"
