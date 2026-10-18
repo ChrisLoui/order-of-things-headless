@@ -1,18 +1,6 @@
-import { notFound } from "next/navigation";
-import { formatMoney } from "@/lib/money";
-import { getProduct } from "@/lib/shopify";
+import { redirect } from "next/navigation";
 
-// Temporary connection check. Replaced by the product page in later tasks.
-export default async function Home() {
-  const product = await getProduct("no-1-woody-vetiver");
-  if (!product) notFound();
-
-  return (
-    <main className="p-10">
-      <h1 className="text-h1">{product.title}</h1>
-      <p className="text-label mt-4">
-        {formatMoney(product.priceRange.minVariantPrice)}
-      </p>
-    </main>
-  );
+// The exam builds a single product page; the home route goes straight to it.
+export default function Home() {
+  redirect("/products/no-1-woody-vetiver");
 }
