@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { BrandGrid } from "@/components/brand/BrandGrid";
 import { Wordmark } from "@/components/icons";
-import type { ScentNotes } from "@/lib/composition";
-import { swatchColor } from "@/lib/composition";
+import { Swatch } from "@/components/brand/Swatch";
+import { SCENT_STAGES, type ScentNotes } from "@/lib/composition";
 
 // Figma 14:3841 (desktop, panel | photo, 1440×720) and 14:3997 (mobile, photo
 // over panel). The panel is bone with the brand grid showing through gaps
@@ -105,9 +105,11 @@ export function BrandStory({
         </ul>
         {notes && (
           <ul className="relative mt-7 flex flex-col gap-1 text-label lg:hidden">
-            <li>Top: {notes.top}</li>
-            <li>Heart: {notes.heart}</li>
-            <li>Base: {notes.base}</li>
+            {SCENT_STAGES.map(({ key, label }) => (
+              <li key={key}>
+                {label}: {notes[key]}
+              </li>
+            ))}
           </ul>
         )}
         <div className="relative mt-auto pt-[76px] lg:absolute lg:top-[653px] lg:left-[26px] lg:mt-0 lg:pt-0">
@@ -129,7 +131,7 @@ export function BrandStory({
           <span>Scent No.{compositionNumber}</span>
           <span className="flex items-center gap-2">
             {title}
-            <span className="size-2.5" style={{ background: swatchColor(compositionNumber) }} />
+            <Swatch number={compositionNumber} />
           </span>
         </p>
       </div>

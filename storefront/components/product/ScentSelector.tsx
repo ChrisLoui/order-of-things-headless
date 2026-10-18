@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { swatchColor, type Composition } from "@/lib/composition";
+import { Swatch } from "@/components/brand/Swatch";
+import type { Composition } from "@/lib/composition";
 import { outlineClass } from "./outline";
 import { PanelHeading } from "./PanelHeading";
 
@@ -39,10 +40,7 @@ function Tile({ composition: c, selected }: { composition: Composition; selected
   // Mobile tiles show only the number; desktop adds the name, or "· Soon".
   const content = (
     <>
-      <span
-        className={`size-2.5 shrink-0 ${unavailable ? "opacity-40" : ""}`}
-        style={{ background: swatchColor(c.number) }}
-      />
+      <Swatch number={c.number} className={`size-2.5 ${unavailable ? "opacity-40" : ""}`} />
       <span className="truncate">
         No.{c.number}
         <span className="hidden lg:inline">

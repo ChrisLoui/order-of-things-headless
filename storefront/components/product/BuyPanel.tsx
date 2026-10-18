@@ -1,6 +1,7 @@
 import { Rule } from "@/components/brand/Rule";
 import type { Composition, ScentNotes } from "@/lib/composition";
-import { getSize, swatchColor } from "@/lib/composition";
+import { Swatch } from "@/components/brand/Swatch";
+import { getSize } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/shopify";
 import { Assurances } from "./Assurances";
@@ -42,7 +43,7 @@ export function BuyPanel({
 
         <div className="flex flex-col gap-3 lg:gap-4">
           <p className="flex items-center gap-2.5 text-label">
-            <span className="size-2.5 shrink-0" style={{ background: swatchColor(compositionNumber) }} />
+            <Swatch number={compositionNumber} />
             Composition No.{compositionNumber} — {productType}
           </p>
           <h1 className="text-h1 uppercase">{product.title}</h1>

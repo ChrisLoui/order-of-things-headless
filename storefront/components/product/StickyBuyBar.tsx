@@ -1,6 +1,7 @@
 "use client";
 
-import { swatchColor, withFluidOunces } from "@/lib/composition";
+import { Swatch } from "@/components/brand/Swatch";
+import { withFluidOunces } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
 import { BUTTON_CLASS } from "./buttonClass";
 import { Carton } from "./Carton";
@@ -44,7 +45,7 @@ export function StickyBuyBar({
 
         <div className="min-w-0 flex-1 lg:-ml-2">
           <p className="flex items-center gap-2.5 text-label">
-            <span className="size-2.5 shrink-0" style={{ background: swatchColor(compositionNumber) }} />
+            <Swatch number={compositionNumber} />
             <span className="truncate">{scentLabel}</span>
           </p>
           <p role="status" className="mt-1 truncate text-body-s opacity-70 lg:text-body-m">

@@ -1,4 +1,4 @@
-import type { ScentNotes } from "@/lib/composition";
+import { SCENT_STAGES, type ScentNotes, type ScentStage } from "@/lib/composition";
 import { PanelHeading } from "./PanelHeading";
 
 // Figma Scent Notes (14:2701): top, heart and base as staggered bars on a wear
@@ -6,11 +6,11 @@ import { PanelHeading } from "./PanelHeading";
 // Positions are Figma px over the 524px desktop module, as percentages.
 const GRID_LINES = [30.53, 47.14, 70.8, 100];
 
-const STAGES = [
-  { key: "top", label: "Top", left: 30.53, width: 16.6, opacity: 0.55 },
-  { key: "heart", label: "Heart", left: 38.93, width: 31.87, opacity: 0.78 },
-  { key: "base", label: "Base", left: 55.34, width: 44.66, opacity: 1 },
-] as const;
+const BARS: Record<ScentStage, { left: number; width: number; opacity: number }> = {
+  top: { left: 30.53, width: 16.6, opacity: 0.55 },
+  heart: { left: 38.93, width: 31.87, opacity: 0.78 },
+  base: { left: 55.34, width: 44.66, opacity: 1 },
+};
 
 export function ScentNotesChart({ notes }: { notes: ScentNotes }) {
   return (
@@ -27,17 +27,20 @@ export function ScentNotesChart({ notes }: { notes: ScentNotes }) {
           />
         ))}
         <dl>
-          {STAGES.map((stage) => (
-            <div key={stage.key} className="relative h-11 border-b border-hairline pt-[5px]">
-              <dt className="text-caption opacity-60">{stage.label}</dt>
-              <dd className="text-label">{notes[stage.key]}</dd>
-              <span
-                aria-hidden
-                className="absolute top-[18px] h-2 bg-ink"
-                style={{ left: `${stage.left}%`, width: `${stage.width}%`, opacity: stage.opacity }}
-              />
-            </div>
-          ))}
+          {SCENT_STAGES.map(({ key, label }) => {
+            const bar = BARS[key];
+            return (
+              <div key={key} className="relative h-11 border-b border-hairline pt-[5px]">
+                <dt className="text-caption opacity-60">{label}</dt>
+                <dd className="text-label">{notes[key]}</dd>
+                <span
+                  aria-hidden
+                  className="absolute top-[18px] h-2 bg-ink"
+                  style={{ left: `${bar.left}%`, width: `${bar.width}%`, opacity: bar.opacity }}
+                />
+              </div>
+            );
+          })}
         </dl>
       </div>
 

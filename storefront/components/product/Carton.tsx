@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { LogoSymbol, Wordmark } from "@/components/icons";
-import { swatchColor, withFluidOunces } from "@/lib/composition";
+import { Swatch } from "@/components/brand/Swatch";
+import { withFluidOunces } from "@/lib/composition";
 
 // Figma Packaging/Carton (14:2458): the butter carton drawn in code, used in
 // gallery tile 02 until photography exists. Every measurement is in Figma px at
@@ -41,13 +42,10 @@ export function Carton({
           <div className="flex flex-col" style={{ gap: u(0.805), ...text }}>
             <p>Eau de Parfum</p>
             <p className="flex items-center" style={{ gap: u(2.414) }}>
-              <span
-                className="shrink-0"
-                style={{
-                  width: u(4.828),
-                  height: u(4.828),
-                  background: swatchColor(compositionNumber),
-                }}
+              <Swatch
+                number={compositionNumber}
+                className=""
+                style={{ width: u(4.828), height: u(4.828) }}
               />
               {scentLabel}
             </p>

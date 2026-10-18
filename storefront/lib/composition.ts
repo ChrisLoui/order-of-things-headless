@@ -9,7 +9,15 @@ import type { Product, ProductSummary } from "./shopify";
  */
 export type CompositionStatus = "available" | "sold-out" | "coming-soon";
 
-export type ScentNotes = { top: string; heart: string; base: string };
+/** The three stages of a scent, in wear order. */
+export const SCENT_STAGES = [
+  { key: "top", label: "Top" },
+  { key: "heart", label: "Heart" },
+  { key: "base", label: "Base" },
+] as const;
+
+export type ScentStage = (typeof SCENT_STAGES)[number]["key"];
+export type ScentNotes = Record<ScentStage, string>;
 
 export function getCompositionNumber(product: ProductSummary): number | null {
   for (const tag of product.tags) {
@@ -55,11 +63,6 @@ const ML_PER_FL_OZ = 29.5735;
 export function withFluidOunces(size: string): string {
   const ml = Number.parseFloat(size);
   return Number.isNaN(ml) ? size : `${size} / ${(ml / ML_PER_FL_OZ).toFixed(1)} fl oz`;
-}
-
-/** Swatch color token from globals.css (`--color-composition-N`). */
-export function swatchColor(number: number): string {
-  return `var(--color-composition-${number})`;
 }
 
 export type Composition = {

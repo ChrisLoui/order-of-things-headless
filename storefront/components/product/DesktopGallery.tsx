@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { ScentNotes } from "@/lib/composition";
+import { SCENT_STAGES, type ScentNotes } from "@/lib/composition";
 import {
   CHARCOAL_BLOCK,
   IN_HAND,
@@ -63,11 +63,6 @@ function Photo({
 // Scent notes as type on charcoal, with bone rules under each line (Figma 14:3721).
 // Figma has a clay texture fill here, fully covered by the charcoal layer, so it's left out.
 function NotesPanel({ notes }: { notes: ScentNotes }) {
-  const rows: [string, string][] = [
-    ["Top", notes.top],
-    ["Heart", notes.heart],
-    ["Base", notes.base],
-  ];
   return (
     <div className="relative h-[500px] overflow-hidden bg-charcoal pt-[100px] pl-[21.28%] text-label text-bone">
       {[126, 246, 366, 486].map((top) => (
@@ -79,10 +74,10 @@ function NotesPanel({ notes }: { notes: ScentNotes }) {
       ))}
       <p>Scent notes</p>
       <dl className="mt-[102px] flex flex-col gap-[102px]">
-        {rows.map(([stage, note]) => (
-          <div key={stage} className="grid grid-cols-[228px_auto]">
-            <dt>{stage}</dt>
-            <dd>{note}</dd>
+        {SCENT_STAGES.map(({ key, label }) => (
+          <div key={key} className="grid grid-cols-[228px_auto]">
+            <dt>{label}</dt>
+            <dd>{notes[key]}</dd>
           </div>
         ))}
       </dl>

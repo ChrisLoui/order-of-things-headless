@@ -22,19 +22,27 @@ export type ProductVariant = {
   selectedOptions: { name: string; value: string }[];
 };
 
+export type ShopifyImage = {
+  url: string;
+  altText: string | null;
+  width: number;
+  height: number;
+};
+
 /** The slim shape used by lists (scent selector, collection cards). */
 export type ProductSummary = {
   id: string;
   handle: string;
   title: string;
+  productType: string;
   tags: string[];
   availableForSale: boolean;
   priceRange: { minVariantPrice: Money };
+  featuredImage: ShopifyImage | null;
 };
 
 export type Product = ProductSummary & {
   description: string;
-  productType: string;
   variants: ProductVariant[];
 };
 
@@ -111,6 +119,7 @@ const PRODUCT_SUMMARY_FRAGMENT = /* GraphQL */ `
     id
     handle
     title
+    productType
     tags
     availableForSale
     priceRange {
@@ -119,6 +128,12 @@ const PRODUCT_SUMMARY_FRAGMENT = /* GraphQL */ `
         currencyCode
       }
     }
+    featuredImage {
+      url
+      altText
+      width
+      height
+    }
   }
 `;
 
@@ -126,7 +141,6 @@ const PRODUCT_FRAGMENT = /* GraphQL */ `
   fragment ProductFields on Product {
     ...ProductSummaryFields
     description
-    productType
     variants(first: 10) {
       nodes {
         id
