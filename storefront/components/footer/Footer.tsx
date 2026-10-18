@@ -64,13 +64,13 @@ export function Footer() {
               </li>
             ))}
           </ul>
-          <p className="flex justify-between opacity-60 lg:contents">
-            <span className="lg:order-1">
+          <p className="flex justify-between lg:contents">
+            <span className="opacity-60 lg:order-1">
               © Order of Things ·{" "}
               <span className="lg:hidden">AU · FR · IT</span>
               <span className="hidden lg:inline">Australia · France · Italy</span>
             </span>
-            <span className="lg:order-3 lg:text-right">
+            <span className="opacity-60 lg:order-3 lg:text-right">
               AUD / USD<span className="hidden lg:inline"> (auto)</span>
             </span>
           </p>
