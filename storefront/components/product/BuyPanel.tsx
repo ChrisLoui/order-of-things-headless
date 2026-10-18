@@ -2,6 +2,7 @@ import type { Composition, ScentNotes } from "@/lib/composition";
 import { swatchColor } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/shopify";
+import { ScentSelector } from "./ScentSelector";
 
 // Figma 14:3744 (desktop) / 14:3909 (mobile): the buy panel beside the gallery.
 // On desktop a bone "plate" covers the brand grid from the breadcrumb down to the
@@ -14,6 +15,7 @@ function Bar() {
 export function BuyPanel({
   product,
   compositionNumber,
+  compositions,
 }: {
   product: Product;
   compositionNumber: number;
@@ -59,6 +61,10 @@ export function BuyPanel({
 
         <div className="mt-4">
           <Bar />
+        </div>
+
+        <div className="mt-4">
+          <ScentSelector compositions={compositions} currentHandle={product.handle} />
         </div>
       </div>
     </div>
