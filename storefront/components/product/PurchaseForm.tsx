@@ -54,7 +54,11 @@ export function PurchaseForm() {
         >
           <fieldset className="pt-2.5">
             <legend className="sr-only">Deliver every</legend>
-            <PanelHeading left="Deliver every" right="Skip, pause or cancel any time" />
+            {/* The legend names the group for screen readers; the visible copy is hidden from them. */}
+            <PanelHeading
+              left={<span aria-hidden>Deliver every</span>}
+              right="Skip, pause or cancel any time"
+            />
             <div className="mt-2 grid grid-cols-3 gap-1.5">
               {FREQUENCIES.map((months) => (
                 <label
