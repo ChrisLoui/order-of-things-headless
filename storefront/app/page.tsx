@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { formatMoney, getProduct } from "@/lib/shopify";
+import { formatMoney } from "@/lib/money";
+import { getProduct } from "@/lib/shopify";
 
 // Temporary connection check. Replaced by the product page in later tasks.
 export default async function Home() {

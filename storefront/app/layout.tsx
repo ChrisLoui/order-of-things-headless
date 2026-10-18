@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Header } from "@/components/header/Header";
 import { fontBody, fontDisplay } from "./fonts";
 import "./globals.css";
 
@@ -13,7 +14,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${fontBody.variable} ${fontDisplay.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

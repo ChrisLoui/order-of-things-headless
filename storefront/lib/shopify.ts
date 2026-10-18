@@ -28,10 +28,22 @@ export type Product = {
   title: string;
   description: string;
   descriptionHtml: string;
+  productType: string;
   tags: string[];
   availableForSale: boolean;
   priceRange: { minVariantPrice: Money };
   variants: ProductVariant[];
+};
+
+export type Cart = {
+  id: string;
+  checkoutUrl: string;
+  totalQuantity: number;
+};
+
+export type CartLineInput = {
+  merchandiseId: string;
+  quantity: number;
 };
 
 type Connection<T> = { nodes: T[] };
@@ -98,6 +110,7 @@ const PRODUCT_FRAGMENT = /* GraphQL */ `
     title
     description
     descriptionHtml
+    productType
     tags
     availableForSale
     priceRange {
@@ -133,6 +146,17 @@ const PRODUCT_BY_HANDLE_QUERY = /* GraphQL */ `
   ${PRODUCT_FRAGMENT}
 `;
 
+const PRODUCTS_QUERY = /* GraphQL */ `
+  query Products($first: Int!) {
+    products(first: $first) {
+      nodes {
+        ...ProductFields
+      }
+    }
+  }
+  ${PRODUCT_FRAGMENT}
+`;
+
 function reshapeProduct(product: ShopifyProduct): Product {
   return { ...product, variants: product.variants.nodes };
 }
@@ -153,11 +177,115 @@ export async function getProduct(handle: string): Promise<Product | null> {
   return data.product ? reshapeProduct(data.product) : null;
 }
 
-// ---------- Formatting ----------
+export async function getProducts(first = 50): Promise<Product[]> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("products");
 
-export function formatMoney({ amount, currencyCode }: Money): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currencyCode,
-  }).format(Number(amount));
+  const data = await shopifyFetch<
+    { products: Connection<ShopifyProduct> },
+    { first: number }
+  >({
+    query: PRODUCTS_QUERY,
+    variables: { first },
+  });
+
+  return data.products.nodes.map(reshapeProduct);
+}
+
+// ---------- Cart ----------
+// Carts are per-visitor, so none of these are cached.
+
+const CART_FRAGMENT = /* GraphQL */ `
+  fragment CartFields on Cart {
+    id
+    checkoutUrl
+    totalQuantity
+  }
+`;
+
+const CART_QUERY = /* GraphQL */ `
+  query Cart($cartId: ID!) {
+    cart(id: $cartId) {
+      ...CartFields
+    }
+  }
+  ${CART_FRAGMENT}
+`;
+
+const CART_CREATE_MUTATION = /* GraphQL */ `
+  mutation CartCreate($lines: [CartLineInput!]) {
+    cartCreate(input: { lines: $lines }) {
+      cart {
+        ...CartFields
+      }
+      userErrors {
+        message
+      }
+    }
+  }
+  ${CART_FRAGMENT}
+`;
+
+const CART_LINES_ADD_MUTATION = /* GraphQL */ `
+  mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        ...CartFields
+      }
+      userErrors {
+        message
+      }
+    }
+  }
+  ${CART_FRAGMENT}
+`;
+
+type CartMutationResult = {
+  cart: Cart | null;
+  userErrors: { message: string }[];
+};
+
+function unwrapCart({ cart, userErrors }: CartMutationResult): Cart {
+  if (userErrors.length) {
+    throw new ShopifyError(userErrors.map((e) => e.message).join("; "));
+  }
+  if (!cart) {
+    throw new ShopifyError("Cart mutation returned no cart");
+  }
+  return cart;
+}
+
+/** Returns null when the cart no longer exists (expired or completed). */
+export async function getCart(cartId: string): Promise<Cart | null> {
+  const data = await shopifyFetch<{ cart: Cart | null }, { cartId: string }>({
+    query: CART_QUERY,
+    variables: { cartId },
+  });
+  return data.cart;
+}
+
+export async function createCart(lines: CartLineInput[]): Promise<Cart> {
+  const data = await shopifyFetch<
+    { cartCreate: CartMutationResult },
+    { lines: CartLineInput[] }
+  >({
+    query: CART_CREATE_MUTATION,
+    variables: { lines },
+  });
+  return unwrapCart(data.cartCreate);
+}
+
+export async function addCartLines(
+  cartId: string,
+  lines: CartLineInput[],
+): Promise<Cart> {
+  const data = await shopifyFetch<
+    { cartLinesAdd: CartMutationResult },
+    { cartId: string; lines: CartLineInput[] }
+  >({
+    query: CART_LINES_ADD_MUTATION,
+    variables: { cartId, lines },
+  });
+  return unwrapCart(data.cartLinesAdd);
 }

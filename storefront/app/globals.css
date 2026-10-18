@@ -10,6 +10,8 @@
   --color-charcoal: #2c2826;
   --color-butter: #e0d693;
   --color-hairline: #d9d3cb;
+  /* Button hover. Figma only says "fill darkens", so this is our value. */
+  --color-charcoal-hover: #1a1716;
 
   --color-composition-1: #9b383a;
   --color-composition-2: #173425;
@@ -82,13 +84,32 @@
 @utility text-label {
   font-family: var(--font-body);
   font-weight: 500;
+  font-size: 14px;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* OoT/Mobile/Label: the mobile gallery counter. */
+@utility text-label-mobile {
+  font-family: var(--font-body);
+  font-weight: 500;
   font-size: 16px;
   line-height: 1.3;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+/* Price in the buy panel: Mobile/H2 on mobile, Desktop/H3 from lg. */
+@utility text-price {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1;
+  text-transform: uppercase;
   @variant lg {
-    font-size: 14px;
-    letter-spacing: 0.06em;
+    font-size: 24px;
+    line-height: 1.1;
   }
 }
 
