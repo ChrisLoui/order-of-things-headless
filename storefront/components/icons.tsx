@@ -54,21 +54,6 @@ export function SearchIcon(props: IconProps) {
   );
 }
 
-export function TruckIcon(props: IconProps) {
-  return (
-    <LineIcon {...props}>
-      <g transform="translate(1.25 6.25)">
-        <path d="M0.75 0.75H12.75V9.75H0.75V0.75Z" />
-        <path d="M12.75 3.75H16.75L19.75 6.75V9.75H12.75V3.75Z" />
-      </g>
-      <g transform="translate(3.45 15.45)">
-        <path d="M4.35 2.55C4.35 3.54411 3.54411 4.35 2.55 4.35C1.55589 4.35 0.75 3.54411 0.75 2.55C0.75 1.55589 1.55589 0.75 2.55 0.75C3.54411 0.75 4.35 1.55589 4.35 2.55Z" />
-        <path d="M15.35 2.55C15.35 3.54411 14.5441 4.35 13.55 4.35C12.5559 4.35 11.75 3.54411 11.75 2.55C11.75 1.55589 12.5559 0.75 13.55 0.75C14.5441 0.75 15.35 1.55589 15.35 2.55Z" />
-      </g>
-    </LineIcon>
-  );
-}
-
 export function ReturnIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
@@ -116,26 +101,35 @@ export function MenuIcon(props: IconProps) {
   );
 }
 
-export function SprayIcon(props: IconProps) {
+// Line icons exported from Figma (figma-assets/manual/icons), in currentColor.
+
+export function TruckIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M3 6H6M2 8.5H6M3 11H6" />
-      <path d="M10.5 6H14.5V10H10.5V6Z" />
-      <path d="M8 10H17V21H8V10Z" />
+      <path d="M2 7H14V16H2V7Z" />
+      <path d="M14 10H18L21 13V16H14V10Z" />
+      <path d="M7.79995 18C7.79995 18.9941 6.99406 19.7999 5.99995 19.7999C5.00584 19.7999 4.19995 18.9941 4.19995 18C4.19995 17.0058 5.00584 16.2 5.99995 16.2C6.99406 16.2 7.79995 17.0058 7.79995 18Z" />
+      <path d="M18.8 18C18.8 18.9941 17.9941 19.7999 17 19.7999C16.0058 19.7999 15.2 18.9941 15.2 18C15.2 17.0058 16.0058 16.2 17 16.2C17.9941 16.2 18.8 17.0058 18.8 18Z" />
     </LineIcon>
   );
 }
 
-// ---------------------------------------------------------------------------
-// STAND-INS. The accordion's icons (Figma 14:3381) couldn't be exported before
-// the Figma MCP limit ran out. These follow the library's rules (24px grid,
-// 1.5px stroke, square caps) and should be replaced with the Figma exports.
+export function SprayIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M8 10H17V21H8V10Z" />
+      <path d="M10.5 6H14.5V10H10.5V6Z" />
+      <path d="M3 6H6M2 8.5H6M3 11H6" />
+    </LineIcon>
+  );
+}
 
 export function NeckIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M12 3C14 3 15.5 4.5 15.5 6.5C15.5 8.5 14 10 12 10C10 10 8.5 8.5 8.5 6.5C8.5 4.5 10 3 12 3Z" />
-      <path d="M10 10V13M14 10V13M5 21V17C5 15 7 13 9 13H15C17 13 19 15 19 17V21" />
+      <path d="M15.5 7C15.5 8.933 13.933 10.5 12 10.5C10.067 10.5 8.5 8.933 8.5 7C8.5 5.067 10.067 3.5 12 3.5C13.933 3.5 15.5 5.067 15.5 7Z" />
+      <path d="M4 21C4 16 7.6 13.5 12 13.5C16.4 13.5 20 16 20 21" />
+      <path d="M12 16.7C12.6628 16.7 13.2 16.1628 13.2 15.5C13.2 14.8373 12.6628 14.3 12 14.3C11.3373 14.3 10.8 14.8373 10.8 15.5C10.8 16.1628 11.3373 16.7 12 16.7Z" fill="currentColor" stroke="none" />
     </LineIcon>
   );
 }
@@ -143,9 +137,9 @@ export function NeckIcon(props: IconProps) {
 export function WristIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M4 15H14C16 15 17 14 17 12.5C17 11 16 10 14 10H9" />
-      <path d="M4 19H15L20 15" />
-      <path d="M17 4V7M20 5.5L18.5 7.5M14 5.5L15.5 7.5" />
+      <path d="M12 2C14.2091 2 16 3.79086 16 6V18C16 20.2091 14.2091 22 12 22C9.79086 22 8 20.2091 8 18V6C8 3.79086 9.79086 2 12 2Z" />
+      <path d="M12 15.2C12.6628 15.2 13.2 14.6628 13.2 14C13.2 13.3373 12.6628 12.8 12 12.8C11.3373 12.8 10.8 13.3373 10.8 14C10.8 14.6628 11.3373 15.2 12 15.2Z" fill="currentColor" stroke="none" />
+      <path d="M8 18H16" />
     </LineIcon>
   );
 }
@@ -153,8 +147,9 @@ export function WristIcon(props: IconProps) {
 export function NoRubIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M12 3C12 3 6 10 6 14C6 17.3 8.7 20 12 20C15.3 20 18 17.3 18 14C18 10 12 3 12 3Z" />
-      <path d="M4 4L20 20" />
+      <path d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z" />
+      <path d="M6.5 17.5L17.5 6.5" />
+      <path d="M7.5 12.5C9 10.9 10.5 10.9 12 12.5C13.5 14.1 15 14.1 16.5 12.5" />
     </LineIcon>
   );
 }
@@ -162,7 +157,7 @@ export function NoRubIcon(props: IconProps) {
 export function DropIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M12 3C12 3 6 10 6 14C6 17.3 8.7 20 12 20C15.3 20 18 17.3 18 14C18 10 12 3 12 3Z" />
+      <path d="M12 3C12 3 6 10 6 14C6 15.5913 6.63214 17.1174 7.75736 18.2426C8.88258 19.3679 10.4087 20 12 20C13.5913 20 15.1174 19.3679 16.2426 18.2426C17.3679 17.1174 18 15.5913 18 14C18 10 12 3 12 3Z" />
     </LineIcon>
   );
 }
@@ -170,8 +165,8 @@ export function DropIcon(props: IconProps) {
 export function RibbonIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M12 3C14.8 3 17 5.2 17 8C17 10.8 14.8 13 12 13C9.2 13 7 10.8 7 8C7 5.2 9.2 3 12 3Z" />
-      <path d="M9 12.5L8 21L12 18.5L16 21L15 12.5" />
+      <path d="M18 10C18 13.3137 15.3137 16 12 16C8.68629 16 6 13.3137 6 10C6 6.68629 8.68629 4 12 4C15.3137 4 18 6.68629 18 10Z" />
+      <path d="M9 15L8 21L12 19L16 21L15 15" />
     </LineIcon>
   );
 }
@@ -179,7 +174,7 @@ export function RibbonIcon(props: IconProps) {
 export function FlaskIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M9 3H15M10 3V9L4.5 19C4 20 4.7 21 5.8 21H18.2C19.3 21 20 20 19.5 19L14 9V3" />
+      <path d="M8.99988 3H9.99988M9.99988 3H13.9999M9.99988 3V9L4.99988 18C4.80779 18.3242 4.71117 18.696 4.72116 19.0727C4.73115 19.4493 4.84735 19.8155 5.05636 20.129C5.26537 20.4425 5.55869 20.6906 5.90254 20.8447C6.24639 20.9988 6.62678 21.0526 6.99988 21H16.9999C17.373 21.0526 17.7534 20.9988 18.0972 20.8447C18.4411 20.6906 18.7344 20.4425 18.9434 20.129C19.1524 19.8155 19.2686 19.4493 19.2786 19.0727C19.2886 18.696 19.192 18.3242 18.9999 18L13.9999 9V3M13.9999 3H14.9999" />
       <path d="M7 15H17" />
     </LineIcon>
   );
@@ -188,8 +183,8 @@ export function FlaskIcon(props: IconProps) {
 export function CartonIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M7 3H17V21H7V3Z" />
-      <path d="M9 6H15M9 8.5H11M13 8.5H15M9 11H15" />
+      <path d="M6 3H18V21H6V3Z" />
+      <path d="M9 7H15M9 9.5H11M13 9.5H15M9 12H15M10.5 14.5H13.5" />
     </LineIcon>
   );
 }
@@ -197,8 +192,9 @@ export function CartonIcon(props: IconProps) {
 export function GiftIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M4 9H20V12H4V9ZM5.5 12H18.5V21H5.5V12ZM12 9V21" />
-      <path d="M12 9C12 9 10.5 4 8 5C6 5.8 7.5 9 12 9ZM12 9C12 9 13.5 4 16 5C18 5.8 16.5 9 12 9Z" />
+      <path d="M4 10H20V21H4V10Z" />
+      <path d="M3 7H21V10H3V7Z" />
+      <path d="M11.9999 7.00008V21.0001M11.9999 7.00008C9.99989 3.00008 5.99989 4.00008 8.99989 7.00008M11.9999 7.00008C13.9999 3.00008 17.9999 4.00008 14.9999 7.00008" />
     </LineIcon>
   );
 }
@@ -206,7 +202,7 @@ export function GiftIcon(props: IconProps) {
 export function ClockIcon(props: IconProps) {
   return (
     <LineIcon {...props}>
-      <path d="M12 3C17 3 21 7 21 12C21 17 17 21 12 21C7 21 3 17 3 12C3 7 7 3 12 3Z" />
+      <path d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z" />
       <path d="M12 7V12L15 14" />
     </LineIcon>
   );
