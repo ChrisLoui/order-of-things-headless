@@ -3,6 +3,7 @@ import { swatchColor } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/shopify";
 import { Assurances } from "./Assurances";
+import { ProductDetails } from "./ProductDetails";
 import { PurchaseForm } from "./PurchaseForm";
 import { ScentNotesChart } from "./ScentNotesChart";
 import { ScentSelector } from "./ScentSelector";
@@ -96,6 +97,11 @@ export function BuyPanel({
         <div className="mt-4 lg:mt-6">
           <Assurances />
         </div>
+      </div>
+
+      {/* Below the plate, on the brand grid. */}
+      <div className="mt-4 lg:mt-0">
+        <ProductDetails handle={product.handle} />
       </div>
     </div>
   );
