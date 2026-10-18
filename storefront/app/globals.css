@@ -12,7 +12,14 @@
   --color-hairline: #d9d3cb;
   /* Button hover. Figma only says "fill darkens", so this is our value. */
   --color-charcoal-hover: #1a1716;
+}
 
+/*
+ * Composition swatches. Read at runtime through var() (see Swatch), never by a
+ * utility class, so they're declared static: Tailwind would otherwise drop them
+ * as unused.
+ */
+@theme static {
   --color-composition-1: #9b383a;
   --color-composition-2: #173425;
   --color-composition-3: #2b397e;
