@@ -18,7 +18,9 @@ export function Manifesto() {
           alt=""
           fill
           sizes="(min-width: 1440px) 720px, (min-width: 1024px) 50vw, 100vw"
-          className="object-cover"
+          // Desktop crops in tight on the hair over the water at the photo's left
+          // edge (desktop-full.png); mobile shows the whole frame.
+          className="object-cover lg:origin-left lg:scale-[1.75]"
         />
         <LogoSymbol className="relative w-[140px] text-bone lg:w-[300px]" />
       </div>
@@ -26,8 +28,12 @@ export function Manifesto() {
       <div className="flex flex-col bg-charcoal px-5 pt-[30px] pb-[25px] text-butter lg:pt-12 lg:pr-0 lg:pb-[49px] lg:pl-[15.7%]">
         <div className="flex flex-1 flex-col lg:w-[450px] lg:max-w-full">
           <Rule tone="butter" />
-          <h2 className="mt-[27px] text-h2 uppercase lg:mt-7 lg:pl-4 lg:text-h1">
-            Order without complexity.
+          {/* Two fixed lines as in Figma. Archivo Narrow is wider than Pilat Narrow,
+              so at 64px the first line runs slightly past the rules (as in the
+              render); below xl the panel is too narrow for 64px, so it stays at H2. */}
+          <h2 className="mt-[27px] text-h2 whitespace-nowrap uppercase lg:mt-7 lg:pl-4 xl:text-h1">
+            <span className="block">Order without</span>
+            <span className="block">complexity.</span>
           </h2>
           <div className="mt-auto pt-6">
             <Rule tone="butter" />
