@@ -2,7 +2,7 @@
 
 import { refresh } from "next/cache";
 import { cookies } from "next/headers";
-import { CART_COOKIE, getCartFromCookie } from "@/lib/cart";
+import { CART_COOKIE } from "@/lib/cart";
 import { addCartLines, createCart } from "@/lib/shopify";
 
 export type AddToCartResult = { ok: true } | { ok: false; error: string };
@@ -17,13 +17,14 @@ export async function addToCart(variantId: string): Promise<AddToCartResult> {
   const lines = [{ merchandiseId: variantId, quantity: 1 }];
 
   try {
-    // Reuse the visitor's cart while Shopify still has it; otherwise start a new one.
-    const existing = await getCartFromCookie();
-    const cart = existing
-      ? await addCartLines(existing.id, lines)
-      : await createCart(lines);
+    const cookieStore = await cookies();
+    const cartId = cookieStore.get(CART_COOKIE)?.value;
 
-    (await cookies()).set(CART_COOKIE, cart.id, {
+    // Add to the visitor's cart; if Shopify no longer has it, start a new one.
+    const cart =
+      (cartId && (await addCartLines(cartId, lines))) || (await createCart(lines));
+
+    cookieStore.set(CART_COOKIE, cart.id, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

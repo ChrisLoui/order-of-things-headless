@@ -22,16 +22,19 @@ export type ProductVariant = {
   selectedOptions: { name: string; value: string }[];
 };
 
-export type Product = {
+/** The slim shape used by lists (scent selector, collection cards). */
+export type ProductSummary = {
   id: string;
   handle: string;
   title: string;
-  description: string;
-  descriptionHtml: string;
-  productType: string;
   tags: string[];
   availableForSale: boolean;
   priceRange: { minVariantPrice: Money };
+};
+
+export type Product = ProductSummary & {
+  description: string;
+  productType: string;
   variants: ProductVariant[];
 };
 
@@ -103,14 +106,11 @@ export async function shopifyFetch<TData, TVariables = Record<string, never>>({
 
 // ---------- Queries ----------
 
-const PRODUCT_FRAGMENT = /* GraphQL */ `
-  fragment ProductFields on Product {
+const PRODUCT_SUMMARY_FRAGMENT = /* GraphQL */ `
+  fragment ProductSummaryFields on Product {
     id
     handle
     title
-    description
-    descriptionHtml
-    productType
     tags
     availableForSale
     priceRange {
@@ -119,6 +119,14 @@ const PRODUCT_FRAGMENT = /* GraphQL */ `
         currencyCode
       }
     }
+  }
+`;
+
+const PRODUCT_FRAGMENT = /* GraphQL */ `
+  fragment ProductFields on Product {
+    ...ProductSummaryFields
+    description
+    productType
     variants(first: 10) {
       nodes {
         id
@@ -135,6 +143,7 @@ const PRODUCT_FRAGMENT = /* GraphQL */ `
       }
     }
   }
+  ${PRODUCT_SUMMARY_FRAGMENT}
 `;
 
 const PRODUCT_BY_HANDLE_QUERY = /* GraphQL */ `
@@ -150,11 +159,11 @@ const PRODUCTS_QUERY = /* GraphQL */ `
   query Products($first: Int!) {
     products(first: $first) {
       nodes {
-        ...ProductFields
+        ...ProductSummaryFields
       }
     }
   }
-  ${PRODUCT_FRAGMENT}
+  ${PRODUCT_SUMMARY_FRAGMENT}
 `;
 
 function reshapeProduct(product: ShopifyProduct): Product {
@@ -177,20 +186,20 @@ export async function getProduct(handle: string): Promise<Product | null> {
   return data.product ? reshapeProduct(data.product) : null;
 }
 
-export async function getProducts(first = 50): Promise<Product[]> {
+export async function getProducts(first = 50): Promise<ProductSummary[]> {
   "use cache";
   cacheLife("minutes");
   cacheTag("products");
 
   const data = await shopifyFetch<
-    { products: Connection<ShopifyProduct> },
+    { products: Connection<ProductSummary> },
     { first: number }
   >({
     query: PRODUCTS_QUERY,
     variables: { first },
   });
 
-  return data.products.nodes.map(reshapeProduct);
+  return data.products.nodes;
 }
 
 // ---------- Cart ----------
@@ -220,6 +229,7 @@ const CART_CREATE_MUTATION = /* GraphQL */ `
         ...CartFields
       }
       userErrors {
+        field
         message
       }
     }
@@ -234,6 +244,7 @@ const CART_LINES_ADD_MUTATION = /* GraphQL */ `
         ...CartFields
       }
       userErrors {
+        field
         message
       }
     }
@@ -241,9 +252,11 @@ const CART_LINES_ADD_MUTATION = /* GraphQL */ `
   ${CART_FRAGMENT}
 `;
 
+type CartUserError = { field: string[] | null; message: string };
+
 type CartMutationResult = {
   cart: Cart | null;
-  userErrors: { message: string }[];
+  userErrors: CartUserError[];
 };
 
 function unwrapCart({ cart, userErrors }: CartMutationResult): Cart {
@@ -276,10 +289,14 @@ export async function createCart(lines: CartLineInput[]): Promise<Cart> {
   return unwrapCart(data.cartCreate);
 }
 
+/**
+ * Adds lines to an existing cart. Returns null when Shopify no longer has that
+ * cart (expired or checked out), so the caller can start a new one.
+ */
 export async function addCartLines(
   cartId: string,
   lines: CartLineInput[],
-): Promise<Cart> {
+): Promise<Cart | null> {
   const data = await shopifyFetch<
     { cartLinesAdd: CartMutationResult },
     { cartId: string; lines: CartLineInput[] }
@@ -287,5 +304,8 @@ export async function addCartLines(
     query: CART_LINES_ADD_MUTATION,
     variables: { cartId, lines },
   });
-  return unwrapCart(data.cartLinesAdd);
+
+  const { cart, userErrors } = data.cartLinesAdd;
+  const cartIsGone = !cart && userErrors.some((e) => e.field?.[0] === "cartId");
+  return cartIsGone ? null : unwrapCart(data.cartLinesAdd);
 }
