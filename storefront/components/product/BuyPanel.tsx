@@ -2,10 +2,10 @@ import { Rule } from "@/components/brand/Rule";
 import type { Composition, ScentNotes } from "@/lib/composition";
 import { Swatch } from "@/components/brand/Swatch";
 import { getSize } from "@/lib/composition";
-import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/shopify";
 import { Assurances } from "./Assurances";
 import { ProductDetails } from "./ProductDetails";
+import { PanelPrice } from "./PanelPrice";
 import { PurchaseForm } from "./PurchaseForm";
 import { ScentNotesChart } from "./ScentNotesChart";
 import { ScentSelector } from "./ScentSelector";
@@ -50,11 +50,7 @@ export function BuyPanel({
         </div>
 
         <div className="mt-5 flex items-center justify-between border-y border-ink py-2 lg:mt-4">
-          <p className="flex items-baseline gap-3">
-            <span className="text-price">{formatMoney(product.priceRange.minVariantPrice)}</span>
-            {/* Copy from the design (AU store). Revisit if the store stays on USD. */}
-            <span className="text-body-m opacity-60">incl. GST</span>
-          </p>
+          <PanelPrice />
           <p className="text-label opacity-70">
             {productType}
             {size && ` · ${size}`}

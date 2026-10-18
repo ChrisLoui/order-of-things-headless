@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState, type ReactNode } from "react";
+import { Collapsible } from "./Collapsible";
 
 // Figma Accordion Row (14:2815): "+" becomes "–", the body eases open over 200ms,
 // and only one row in the group is open at a time. Bodies are rendered on the
@@ -35,20 +36,16 @@ export function Accordion({ items }: { items: AccordionItem[] }) {
                 </span>
               </button>
             </h3>
-            <div
+            {/* Indented to line up with the title, not the number. */}
+            <Collapsible
+              open={isOpen}
               id={panelId}
               role="region"
               aria-label={item.title}
-              inert={!isOpen}
-              className={`grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none ${
-                isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-              }`}
+              className="pl-9"
             >
-              {/* Indented to line up with the title, not the number. */}
-              <div className="overflow-hidden pl-9">
-                <div className="pb-6">{item.content}</div>
-              </div>
-            </div>
+              <div className="pb-6">{item.content}</div>
+            </Collapsible>
           </div>
         );
       })}

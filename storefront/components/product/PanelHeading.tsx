@@ -14,7 +14,7 @@ export function PanelHeading({
   return (
     <div className={`flex justify-between gap-4 text-caption ${className ?? ""}`}>
       <p>{left}</p>
-      <p>{right}</p>
+      <p className="text-right">{right}</p>
     </div>
   );
 }

@@ -9,17 +9,29 @@ import type { Money } from "@/lib/shopify";
 // add the same variant with the same selected mode and show the same label.
 //
 // SUBSCRIBE & SAVE IS UI STATE ONLY. The store has no subscription app, so there
-// is no selling plan to attach to the cart line. Selecting it shows the 10% price
-// and the "Subscribe" button from the design, but the button stays disabled
-// rather than adding a one-time line at full price. Wire it to a selling plan
-// (cartLinesAdd sellingPlanId) once one exists.
+// is no selling plan to attach to the cart line. Selecting it shows the 10% price,
+// the delivery frequency and the "Subscribe" button from the design, but the
+// button stays disabled rather than adding a one-time line at full price. Once a
+// subscription app exists, each frequency maps to one of its selling plans
+// (cartLinesAdd sellingPlanId).
 const SUBSCRIBE_DISCOUNT = 0.1;
 
 export type PurchaseMode = "one-time" | "subscribe";
 
+/** Delivery frequency in months. Figma preselects 3 for a 50 ml bottle. */
+export const FREQUENCIES = [1, 2, 3] as const;
+export type Frequency = (typeof FREQUENCIES)[number];
+const DEFAULT_FREQUENCY: Frequency = 3;
+
+/** 1 → "1 month", 3 → "3 months" */
+export const frequencyLabel = (months: Frequency) =>
+  `${months} ${months === 1 ? "month" : "months"}`;
+
 type PurchaseState = {
   mode: PurchaseMode;
   setMode: (mode: PurchaseMode) => void;
+  frequency: Frequency;
+  setFrequency: (frequency: Frequency) => void;
   price: Money;
   subscribePrice: Money;
   /** Price for the selected mode. */
@@ -54,6 +66,7 @@ export function PurchaseProvider({
   children: ReactNode;
 }) {
   const [mode, setMode] = useState<PurchaseMode>("one-time");
+  const [frequency, setFrequency] = useState<Frequency>(DEFAULT_FREQUENCY);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [panelButtonScrolledPast, setScrolledPast] = useState(false);
@@ -121,6 +134,8 @@ export function PurchaseProvider({
       value={{
         mode,
         setMode,
+        frequency,
+        setFrequency,
         price,
         subscribePrice,
         selectedPrice: mode === "subscribe" ? subscribePrice : price,
