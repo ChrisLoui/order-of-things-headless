@@ -7,6 +7,7 @@ import { DesktopGallery } from "@/components/product/DesktopGallery";
 import { MobileGallery } from "@/components/product/MobileGallery";
 import { PurchaseProvider } from "@/components/product/PurchaseContext";
 import { StickyBuyBar } from "@/components/product/StickyBuyBar";
+import { Manifesto } from "@/components/sections/Manifesto";
 import {
   compositionLabel,
   getCompositionNumber,
@@ -73,6 +74,7 @@ async function ProductHero({ params }: Pick<PageProps<"/products/[handle]">, "pa
           notes={notes}
         />
       </section>
+      <Manifesto />
       <StickyBuyBar
         compositionNumber={number}
         scentLabel={scentLabel}

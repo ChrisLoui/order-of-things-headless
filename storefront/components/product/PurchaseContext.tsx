@@ -90,10 +90,13 @@ export function PurchaseProvider({
     if (!el) return () => {};
     const header = document.querySelector<HTMLElement>("[data-site-header]");
     let observer: IntersectionObserver | undefined;
+    let observedHeight: number | undefined;
 
     const observe = () => {
-      observer?.disconnect();
       const headerHeight = header?.offsetHeight ?? 0;
+      if (headerHeight === observedHeight) return; // width-only resize
+      observedHeight = headerHeight;
+      observer?.disconnect();
       observer = new IntersectionObserver(
         ([entry]) => {
           setScrolledPast(!entry.isIntersecting && entry.boundingClientRect.top < headerHeight);
@@ -104,12 +107,12 @@ export function PurchaseProvider({
     };
 
     observe();
-    const resizeObserver = header ? new ResizeObserver(observe) : undefined;
-    if (header) resizeObserver?.observe(header);
+    const resizeObserver = new ResizeObserver(observe);
+    if (header) resizeObserver.observe(header);
 
     return () => {
       observer?.disconnect();
-      resizeObserver?.disconnect();
+      resizeObserver.disconnect();
     };
   }, []);
 

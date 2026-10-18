@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 // Figma Brand Grid (14:1663): six columns at fixed percentages of the width, plus
 // baseline rows ("Fine" = 30px desktop / 22.5px mobile, "Medium" = 60px).
 // "Ink over bone, Bone over imagery." Place it absolute; the host clips it.
-const COLUMNS = [10.94, 26.56, 42.19, 57.81, 73.44, 89.06];
+export const COLUMNS = [10.94, 26.56, 42.19, 57.81, 73.44, 89.06];
 
 const TONES = {
   ink: { row: "rgb(56 51 49 / 0.08)", col: "bg-ink/14" },
@@ -13,11 +13,14 @@ const TONES = {
 export function BrandGrid({
   rows = 30,
   tone = "ink",
+  columns = COLUMNS,
   className,
   style,
 }: {
   /** Row spacing in px (rows start one spacing from the top), or false for columns only. */
   rows?: number | false;
+  /** Column positions in %; defaults to all six. */
+  columns?: number[];
   tone?: keyof typeof TONES;
   className?: string;
   style?: CSSProperties;
@@ -39,7 +42,7 @@ export function BrandGrid({
           }}
         />
       )}
-      {COLUMNS.map((left) => (
+      {columns.map((left) => (
         <div key={left} className={`absolute inset-y-0 w-px ${col}`} style={{ left: `${left}%` }} />
       ))}
     </div>
