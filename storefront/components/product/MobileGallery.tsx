@@ -14,17 +14,21 @@ export function MobileGallery({ className }: { className?: string }) {
   const track = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const last = MOBILE_GALLERY.length - 1;
+  // Keeps the index on a real slide: elastic overscroll can round past the ends.
+  const clamp = (i: number) => Math.min(last, Math.max(0, i));
 
   const goTo = (i: number) => {
     const el = track.current;
     if (!el) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollTo({ left: i * el.clientWidth, behavior: reduceMotion ? "auto" : "smooth" });
+    el.scrollTo({ left: clamp(i) * el.clientWidth, behavior: reduceMotion ? "auto" : "smooth" });
   };
 
   const onScroll = () => {
     const el = track.current;
-    if (el) setIndex(Math.round(el.scrollLeft / el.clientWidth));
+    // Hidden from lg up (display: none), where clientWidth is 0.
+    if (!el || el.clientWidth === 0) return;
+    setIndex(clamp(Math.round(el.scrollLeft / el.clientWidth)));
   };
 
   const arrowClass =
