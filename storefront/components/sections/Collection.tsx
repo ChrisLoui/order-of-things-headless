@@ -6,8 +6,9 @@ import { compositionLabel, getStatus, sortByComposition } from "@/lib/compositio
 import { formatMoney } from "@/lib/money";
 import type { ProductSummary } from "@/lib/shopify";
 
-// Figma "The collection" (14:3871 desktop / 14:4043 mobile): the first three
-// compositions as Product Card / R2. Cards use the product's Shopify image once
+// Figma "The collection" (14:3871 desktop / 14:4043 mobile): "then the rest of
+// the collection, offered and never pushed" (journey note 14:3371), so the
+// first three compositions other than the current one, as Product Card / R2. Cards use the product's Shopify image once
 // one is uploaded; until then, a local studio shot of the carton.
 const PLACEHOLDER_IMAGE = "/images/collection-card-placeholder.jpg";
 const CARD_COUNT = 3;
@@ -61,8 +62,16 @@ function Card({ product, number }: { product: ProductSummary; number: number }) 
   );
 }
 
-export function Collection({ products }: { products: ProductSummary[] }) {
-  const cards = sortByComposition(products).slice(0, CARD_COUNT);
+export function Collection({
+  products,
+  currentHandle,
+}: {
+  products: ProductSummary[];
+  currentHandle: string;
+}) {
+  const cards = sortByComposition(products)
+    .filter(({ product }) => product.handle !== currentHandle)
+    .slice(0, CARD_COUNT);
 
   const allFragrance = (
     <a

@@ -80,7 +80,7 @@ async function ProductHero({ params }: Pick<PageProps<"/products/[handle]">, "pa
       <Manifesto />
       <BrandStory compositionNumber={number} title={product.title} notes={notes} />
       <SixCartons />
-      <Collection products={products} />
+      <Collection products={products} currentHandle={product.handle} />
       <StickyBuyBar
         compositionNumber={number}
         scentLabel={scentLabel}
