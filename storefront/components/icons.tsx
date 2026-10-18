@@ -27,6 +27,36 @@ export function Wordmark(props: IconProps) {
   );
 }
 
+// Stacked OT symbol (Figma Logo/Symbol 14:2444), built from the R2 block grid.
+// Blocks are [top, right, bottom, left] insets in % of a 125.517 × 94.975 box.
+const SYMBOL_W = 125.517;
+const SYMBOL_H = 94.975;
+const SYMBOL_BLOCKS = [
+  [0, 0, 88.11, 0],
+  [17.62, 66.67, 70.48, 0],
+  [17.62, 0, 70.48, 66.67],
+  [35.24, 0, 52.86, 0],
+  [52.86, 0, 35.24, 0],
+  [70.48, 33.33, 17.62, 33.33],
+  [88.11, 33.33, 0, 33.33],
+];
+
+export function LogoSymbol(props: IconProps) {
+  return (
+    <svg viewBox={`0 0 ${SYMBOL_W} ${SYMBOL_H}`} fill="currentColor" aria-hidden {...props}>
+      {SYMBOL_BLOCKS.map(([top, right, bottom, left]) => (
+        <rect
+          key={`${top}-${left}`}
+          x={(left / 100) * SYMBOL_W}
+          y={(top / 100) * SYMBOL_H}
+          width={((100 - left - right) / 100) * SYMBOL_W}
+          height={((100 - top - bottom) / 100) * SYMBOL_H}
+        />
+      ))}
+    </svg>
+  );
+}
+
 function LineIcon({ children, ...props }: IconProps) {
   return (
     <svg

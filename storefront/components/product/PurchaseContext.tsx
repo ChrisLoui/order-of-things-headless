@@ -82,15 +82,35 @@ export function PurchaseProvider({
     });
   };
 
-  // "Scrolled past" means the button has left the viewport through the top, so
-  // the bar doesn't show on first load when the button is still below the fold.
+  // "Scrolled past" means the button has gone up under the sticky site header,
+  // so the bar doesn't show on first load when the button is still below the
+  // fold. The header's height changes at the lg breakpoint, so it's measured and
+  // the observer is rebuilt whenever it resizes.
   const panelButtonRef = useCallback((el: HTMLElement | null) => {
     if (!el) return () => {};
-    const observer = new IntersectionObserver(([entry]) => {
-      setScrolledPast(!entry.isIntersecting && entry.boundingClientRect.top < 0);
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
+    const header = document.querySelector<HTMLElement>("[data-site-header]");
+    let observer: IntersectionObserver | undefined;
+
+    const observe = () => {
+      observer?.disconnect();
+      const headerHeight = header?.offsetHeight ?? 0;
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          setScrolledPast(!entry.isIntersecting && entry.boundingClientRect.top < headerHeight);
+        },
+        { rootMargin: `-${headerHeight}px 0px 0px 0px` },
+      );
+      observer.observe(el);
+    };
+
+    observe();
+    const resizeObserver = header ? new ResizeObserver(observe) : undefined;
+    if (header) resizeObserver?.observe(header);
+
+    return () => {
+      observer?.disconnect();
+      resizeObserver?.disconnect();
+    };
   }, []);
 
   return (

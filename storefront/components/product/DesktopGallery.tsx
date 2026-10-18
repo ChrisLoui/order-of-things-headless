@@ -93,11 +93,13 @@ function NotesPanel({ notes }: { notes: ScentNotes }) {
 export function DesktopGallery({
   compositionNumber,
   scentLabel,
+  size,
   notes,
   className,
 }: {
   compositionNumber: number;
   scentLabel: string;
+  size: string | undefined;
   notes: ScentNotes | null;
   className?: string;
 }) {
@@ -109,6 +111,7 @@ export function DesktopGallery({
           <Carton
             compositionNumber={compositionNumber}
             scentLabel={scentLabel}
+            size={size}
             className="absolute top-[13.08%] left-[30.41%] w-[37.14%]"
           />
           <Caption index="02" text="Butter carton" />

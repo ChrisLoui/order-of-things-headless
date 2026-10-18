@@ -10,7 +10,7 @@ const NAV = ["Products", "Scents", "Discover"];
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 bg-bone">
+    <header data-site-header className="sticky top-0 z-40 bg-bone">
       <div className="mx-auto max-w-[1440px] px-5 py-3 lg:px-10 lg:py-5">
         <div className="flex flex-col gap-4 lg:py-[14px]">
           <div className="flex items-center justify-between border-b border-ink pt-3 pb-[14px] lg:pt-0 lg:pb-4">

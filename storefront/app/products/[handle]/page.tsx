@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { BuyPanel } from "@/components/product/BuyPanel";
-import { BrandGrid } from "@/components/product/BrandGrid";
+import { BrandGrid } from "@/components/brand/BrandGrid";
 import { DesktopGallery } from "@/components/product/DesktopGallery";
 import { MobileGallery } from "@/components/product/MobileGallery";
 import { PurchaseProvider } from "@/components/product/PurchaseContext";
@@ -43,9 +43,12 @@ async function ProductHero({ params }: Pick<PageProps<"/products/[handle]">, "pa
   const notes = getScentNotes(product);
   const scentLabel = compositionLabel(number, product.title);
   const variant = product.variants[0];
+  const size = getSize(product);
 
   return (
+    // Keyed by handle so each composition starts with fresh purchase state.
     <PurchaseProvider
+      key={handle}
       variantId={variant?.id}
       price={variant?.price ?? product.priceRange.minVariantPrice}
       status={getStatus(product)}
@@ -57,6 +60,7 @@ async function ProductHero({ params }: Pick<PageProps<"/products/[handle]">, "pa
             className="hidden lg:flex"
             compositionNumber={number}
             scentLabel={scentLabel}
+            size={size}
             notes={notes}
           />
           <MobileGallery className="lg:hidden" />
@@ -73,7 +77,7 @@ async function ProductHero({ params }: Pick<PageProps<"/products/[handle]">, "pa
         compositionNumber={number}
         scentLabel={scentLabel}
         productType={product.productType}
-        size={getSize(product)}
+        size={size}
       />
     </PurchaseProvider>
   );

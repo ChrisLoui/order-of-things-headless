@@ -38,6 +38,7 @@ export function StickyBuyBar({
         <Carton
           compositionNumber={compositionNumber}
           scentLabel={scentLabel}
+          size={size}
           className="hidden w-[25px] shrink-0 lg:block"
         />
 
