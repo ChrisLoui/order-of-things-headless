@@ -115,3 +115,99 @@ export function MenuIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function SprayIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M3 6H6M2 8.5H6M3 11H6" />
+      <path d="M10.5 6H14.5V10H10.5V6Z" />
+      <path d="M8 10H17V21H8V10Z" />
+    </LineIcon>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// STAND-INS. The accordion's icons (Figma 14:3381) couldn't be exported before
+// the Figma MCP limit ran out. These follow the library's rules (24px grid,
+// 1.5px stroke, square caps) and should be replaced with the Figma exports.
+
+export function NeckIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M12 3C14 3 15.5 4.5 15.5 6.5C15.5 8.5 14 10 12 10C10 10 8.5 8.5 8.5 6.5C8.5 4.5 10 3 12 3Z" />
+      <path d="M10 10V13M14 10V13M5 21V17C5 15 7 13 9 13H15C17 13 19 15 19 17V21" />
+    </LineIcon>
+  );
+}
+
+export function WristIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M4 15H14C16 15 17 14 17 12.5C17 11 16 10 14 10H9" />
+      <path d="M4 19H15L20 15" />
+      <path d="M17 4V7M20 5.5L18.5 7.5M14 5.5L15.5 7.5" />
+    </LineIcon>
+  );
+}
+
+export function NoRubIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M12 3C12 3 6 10 6 14C6 17.3 8.7 20 12 20C15.3 20 18 17.3 18 14C18 10 12 3 12 3Z" />
+      <path d="M4 4L20 20" />
+    </LineIcon>
+  );
+}
+
+export function DropIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M12 3C12 3 6 10 6 14C6 17.3 8.7 20 12 20C15.3 20 18 17.3 18 14C18 10 12 3 12 3Z" />
+    </LineIcon>
+  );
+}
+
+export function RibbonIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M12 3C14.8 3 17 5.2 17 8C17 10.8 14.8 13 12 13C9.2 13 7 10.8 7 8C7 5.2 9.2 3 12 3Z" />
+      <path d="M9 12.5L8 21L12 18.5L16 21L15 12.5" />
+    </LineIcon>
+  );
+}
+
+export function FlaskIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M9 3H15M10 3V9L4.5 19C4 20 4.7 21 5.8 21H18.2C19.3 21 20 20 19.5 19L14 9V3" />
+      <path d="M7 15H17" />
+    </LineIcon>
+  );
+}
+
+export function CartonIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M7 3H17V21H7V3Z" />
+      <path d="M9 6H15M9 8.5H11M13 8.5H15M9 11H15" />
+    </LineIcon>
+  );
+}
+
+export function GiftIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M4 9H20V12H4V9ZM5.5 12H18.5V21H5.5V12ZM12 9V21" />
+      <path d="M12 9C12 9 10.5 4 8 5C6 5.8 7.5 9 12 9ZM12 9C12 9 13.5 4 16 5C18 5.8 16.5 9 12 9Z" />
+    </LineIcon>
+  );
+}
+
+export function ClockIcon(props: IconProps) {
+  return (
+    <LineIcon {...props}>
+      <path d="M12 3C17 3 21 7 21 12C21 17 17 21 12 21C7 21 3 17 3 12C3 7 7 3 12 3Z" />
+      <path d="M12 7V12L15 14" />
+    </LineIcon>
+  );
+}

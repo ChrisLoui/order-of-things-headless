@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { swatchColor, type Composition } from "@/lib/composition";
 import { outlineClass } from "./outline";
+import { PanelHeading } from "./PanelHeading";
 
 // Scent selector (Figma Composition Tiles 14:3782): one tile per composition.
 // Tiles are links to the composition's page; navigation is client-side and keeps
@@ -17,10 +18,7 @@ export function ScentSelector({
 }) {
   return (
     <div>
-      <div className="flex justify-between text-caption">
-        <p>Scent</p>
-        <p>{currentLabel}</p>
-      </div>
+      <PanelHeading left="Scent" right={currentLabel} />
 
       <ul className="mt-2 grid grid-cols-3 gap-2">
         {compositions.map((c) => (

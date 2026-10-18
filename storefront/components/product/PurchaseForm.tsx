@@ -7,6 +7,7 @@ import type { CompositionStatus } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
 import type { Money } from "@/lib/shopify";
 import { outlineClass } from "./outline";
+import { PanelHeading } from "./PanelHeading";
 
 // Purchase options and Add to cart (Figma 14:3792–14:3803).
 //
@@ -58,10 +59,7 @@ export function PurchaseForm({
 
   return (
     <div>
-      <div className="flex justify-between text-caption">
-        <p>Purchase</p>
-        <p>{mode === "one-time" ? "One-time" : "Subscribe & save"}</p>
-      </div>
+      <PanelHeading left="Purchase" right={mode === "one-time" ? "One-time" : "Subscribe & save"} />
 
       <fieldset className="flex flex-col gap-2">
         <legend className="sr-only">Purchase option</legend>

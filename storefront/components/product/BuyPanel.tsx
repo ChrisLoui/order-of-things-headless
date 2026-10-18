@@ -2,7 +2,9 @@ import type { Composition, CompositionStatus, ScentNotes } from "@/lib/compositi
 import { swatchColor } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/shopify";
+import { Assurances } from "./Assurances";
 import { PurchaseForm } from "./PurchaseForm";
+import { ScentNotesChart } from "./ScentNotesChart";
 import { ScentSelector } from "./ScentSelector";
 
 // Figma 14:3744 (desktop) / 14:3909 (mobile): the buy panel beside the gallery.
@@ -19,6 +21,7 @@ export function BuyPanel({
   scentLabel,
   status,
   compositions,
+  notes,
 }: {
   product: Product;
   compositionNumber: number;
@@ -82,6 +85,16 @@ export function BuyPanel({
             price={variant?.price ?? product.priceRange.minVariantPrice}
             status={status}
           />
+        </div>
+
+        {notes && (
+          <div className="mt-4 lg:mt-6">
+            <ScentNotesChart notes={notes} />
+          </div>
+        )}
+
+        <div className="mt-4 lg:mt-6">
+          <Assurances />
         </div>
       </div>
     </div>
