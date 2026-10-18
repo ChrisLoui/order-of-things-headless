@@ -10,6 +10,10 @@ import { HeroImage } from "./HeroImage";
 // segmented indicator. Built on CSS scroll snap, so touch swiping is native.
 const pad = (n: number) => String(n).padStart(2, "0");
 
+// The carousel is hidden from lg up, so it only needs a full-width image below lg.
+// Saying so keeps a hidden slide from ever picking a large source on desktop.
+const SIZES = "(min-width: 1024px) 1px, 100vw";
+
 export function MobileGallery({ className }: { className?: string }) {
   const track = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
@@ -51,9 +55,9 @@ export function MobileGallery({ className }: { className?: string }) {
               className="relative aspect-[390/488] w-full shrink-0 snap-start"
             >
               {i === 0 ? (
-                <HeroImage image={image} sizes="100vw" shownOn="mobile" />
+                <HeroImage image={image} sizes={SIZES} shownOn="mobile" />
               ) : (
-                <Image src={image.src} alt={image.alt} fill sizes="100vw" className="object-cover" />
+                <Image src={image.src} alt={image.alt} fill sizes={SIZES} className="object-cover" />
               )}
             </div>
           ))}
