@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { COLUMNS, BrandGrid } from "@/components/brand/BrandGrid";
+import { Rule } from "@/components/brand/Rule";
 import { LogoSymbol } from "@/components/icons";
 
 // Figma 14:3818 (desktop 1440×661) / 14:3983 (mobile 390×560): photo with the
@@ -7,10 +8,6 @@ import { LogoSymbol } from "@/components/icons";
 // The render shows only three of the grid's columns here (bone over the photo,
 // one on the charcoal), so only those are drawn.
 const VISIBLE_COLUMNS = [COLUMNS[0], COLUMNS[2], COLUMNS[3]];
-
-function Rule() {
-  return <div className="h-2 bg-butter lg:h-3" />;
-}
 
 export function Manifesto() {
   return (
@@ -28,12 +25,12 @@ export function Manifesto() {
 
       <div className="flex flex-col bg-charcoal px-5 pt-[30px] pb-[25px] text-butter lg:pt-12 lg:pr-0 lg:pb-[49px] lg:pl-[15.7%]">
         <div className="flex flex-1 flex-col lg:w-[450px] lg:max-w-full">
-          <Rule />
+          <Rule tone="butter" />
           <h2 className="mt-[27px] text-h2 uppercase lg:mt-7 lg:pl-4 lg:text-h1">
             Order without complexity.
           </h2>
           <div className="mt-auto pt-6">
-            <Rule />
+            <Rule tone="butter" />
           </div>
           <p className="mt-[26px] text-body-m lg:mt-[25px] lg:max-w-[340px] lg:pl-4">
             <span className="lg:hidden">
@@ -46,7 +43,7 @@ export function Manifesto() {
             </span>
           </p>
           <div className="mt-[22px] lg:mt-auto">
-            <Rule />
+            <Rule tone="butter" />
           </div>
         </div>
       </div>

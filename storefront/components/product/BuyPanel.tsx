@@ -1,3 +1,4 @@
+import { Rule } from "@/components/brand/Rule";
 import type { Composition, ScentNotes } from "@/lib/composition";
 import { getSize, swatchColor } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
@@ -11,10 +12,6 @@ import { ScentSelector } from "./ScentSelector";
 // Figma 14:3744 (desktop) / 14:3909 (mobile): the buy panel beside the gallery.
 // On desktop a bone "plate" covers the brand grid from the breadcrumb down to the
 // details accordion, which sits on the grid (Figma Grid Plate 14:3707).
-
-function Bar() {
-  return <div className="h-2 bg-ink lg:h-3" />;
-}
 
 export function BuyPanel({
   product,
@@ -40,7 +37,7 @@ export function BuyPanel({
         </nav>
 
         <div className="mt-4 mb-4 lg:mb-5">
-          <Bar />
+          <Rule />
         </div>
 
         <div className="flex flex-col gap-3 lg:gap-4">
@@ -66,7 +63,7 @@ export function BuyPanel({
         <p className="mt-5 text-body-m lg:mt-4">{product.description}</p>
 
         <div className="mt-4">
-          <Bar />
+          <Rule />
         </div>
 
         <div className="mt-4">
