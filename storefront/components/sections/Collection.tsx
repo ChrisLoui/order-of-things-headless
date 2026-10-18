@@ -54,7 +54,8 @@ function Card({ product, number }: { product: ProductSummary; number: number }) 
   );
 
   return available ? (
-    <Link href={`/products/${product.handle}`} className="block">
+    // Full prefetch so the page doesn't blank on navigation (see ScentSelector).
+    <Link href={`/products/${product.handle}`} prefetch={true} className="block">
       {content}
     </Link>
   ) : (

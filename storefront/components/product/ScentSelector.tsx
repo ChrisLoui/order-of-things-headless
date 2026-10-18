@@ -8,6 +8,12 @@ import { PanelHeading } from "./PanelHeading";
 // Tiles are links to the composition's page; navigation is client-side and keeps
 // the scroll position, so the page turns over in place. Unreleased (coming soon)
 // and sold-out compositions aren't links.
+//
+// prefetch={true}: with Partial Prefetching a default <Link> prefetches only the
+// route's shared App Shell, which here is the empty Suspense boundary around the
+// per-handle content. Without the full prefetch, switching composition blanked
+// the page until that content streamed in. All compositions are prerendered, so
+// the full prefetch is served from the static cache.
 export function ScentSelector({
   compositions,
   currentHandle,
@@ -63,6 +69,7 @@ function Tile({ composition: c, selected }: { composition: Composition; selected
   return (
     <Link
       href={`/products/${c.handle}`}
+      prefetch={true}
       scroll={false}
       aria-current={selected ? "page" : undefined}
       className={className}
