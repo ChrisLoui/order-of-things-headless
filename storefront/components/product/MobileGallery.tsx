@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { ArrowIcon } from "@/components/icons";
 import { MOBILE_GALLERY } from "@/lib/gallery";
+import { HeroImage } from "./HeroImage";
 
 // Figma 14:3885: swipeable gallery with prev/next arrows, a counter and a
 // segmented indicator. Built on CSS scroll snap, so touch swiping is native.
@@ -45,15 +46,11 @@ export function MobileGallery({ className }: { className?: string }) {
               aria-label={`${i + 1} of ${MOBILE_GALLERY.length}`}
               className="relative aspect-[390/488] w-full shrink-0 snap-start"
             >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="100vw"
-                className="object-cover"
-                loading={i === 0 ? "eager" : "lazy"}
-                fetchPriority={i === 0 ? "high" : undefined}
-              />
+              {i === 0 ? (
+                <HeroImage image={image} sizes="100vw" shownOn="mobile" />
+              ) : (
+                <Image src={image.src} alt={image.alt} fill sizes="100vw" className="object-cover" />
+              )}
             </div>
           ))}
         </div>

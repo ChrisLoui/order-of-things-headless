@@ -8,6 +8,7 @@ import {
   type GalleryImage,
 } from "@/lib/gallery";
 import { Carton } from "./Carton";
+import { HeroImage } from "./HeroImage";
 
 // Figma 14:3708: the desktop gallery, an editorial stack in the left column.
 // Tiles are numbered 01–06; the scent-notes panel is tile 04.
@@ -39,25 +40,21 @@ function Photo({
   index,
   sizes,
   tone,
-  eager,
+  hero,
 }: {
   image: GalleryImage;
   index: string;
   sizes: string;
   tone?: "ink" | "bone";
-  eager?: boolean;
+  hero?: boolean;
 }) {
   return (
     <figure className="relative aspect-square overflow-hidden">
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        sizes={sizes}
-        className="object-cover"
-        loading={eager ? "eager" : undefined}
-        fetchPriority={eager ? "high" : undefined}
-      />
+      {hero ? (
+        <HeroImage image={image} sizes={sizes} shownOn="desktop" />
+      ) : (
+        <Image src={image.src} alt={image.alt} fill sizes={sizes} className="object-cover" />
+      )}
       <Caption index={index} text={image.caption} tone={tone} />
     </figure>
   );
@@ -106,7 +103,7 @@ export function DesktopGallery({
 }) {
   return (
     <div className={`flex flex-col ${className ?? ""}`}>
-      <Photo image={STUDIO_FRONT} index="01" sizes={FULL} eager />
+      <Photo image={STUDIO_FRONT} index="01" sizes={FULL} hero />
       <div className="grid grid-cols-2">
         <figure className="relative aspect-square bg-bone">
           <Carton
