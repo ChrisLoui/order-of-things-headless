@@ -84,7 +84,7 @@ function Option({
 }) {
   return (
     <label
-      className={`flex cursor-pointer items-center gap-3 bg-bone px-4 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ink ${
+      className={`flex cursor-pointer items-center gap-2 bg-bone px-3 has-focus-visible:outline-2 lg:gap-3 lg:px-4 has-focus-visible:outline-offset-2 has-focus-visible:outline-ink ${
         checked ? "pt-[14px] pb-3" : "py-[14px]"
       } ${outlineClass(checked ? "selected" : "default")}`}
     >
@@ -96,11 +96,14 @@ function Option({
         className="sr-only"
       />
       <RadioIcon checked={checked} className="shrink-0" />
-      <span className="flex flex-1 items-center gap-2.5 text-label">
+      {/* Archivo runs wider than Pilat, so on mobile the padding and gaps are
+          tighter than Figma's to keep label, pill and price on one 390px line
+          (measured: ~314px of 316, including an "A$" price). */}
+      <span className="flex flex-1 items-center gap-1.5 text-label whitespace-nowrap lg:gap-2.5">
         {label}
-        {badge && <span className="bg-butter px-2 py-[3px] text-caption whitespace-nowrap">{badge}</span>}
+        {badge && <span className="bg-butter px-1.5 py-[3px] text-caption lg:px-2">{badge}</span>}
       </span>
-      <span className="text-product-meta">{price}</span>
+      <span className="text-product-meta whitespace-nowrap">{price}</span>
     </label>
   );
 }
