@@ -1,7 +1,8 @@
-import type { Composition, ScentNotes } from "@/lib/composition";
+import type { Composition, CompositionStatus, ScentNotes } from "@/lib/composition";
 import { swatchColor } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/shopify";
+import { PurchaseForm } from "./PurchaseForm";
 import { ScentSelector } from "./ScentSelector";
 
 // Figma 14:3744 (desktop) / 14:3909 (mobile): the buy panel beside the gallery.
@@ -15,10 +16,14 @@ function Bar() {
 export function BuyPanel({
   product,
   compositionNumber,
+  scentLabel,
+  status,
   compositions,
 }: {
   product: Product;
   compositionNumber: number;
+  scentLabel: string;
+  status: CompositionStatus;
   compositions: Composition[];
   notes: ScentNotes | null;
 }) {
@@ -64,7 +69,19 @@ export function BuyPanel({
         </div>
 
         <div className="mt-4">
-          <ScentSelector compositions={compositions} currentHandle={product.handle} />
+          <ScentSelector
+            compositions={compositions}
+            currentHandle={product.handle}
+            currentLabel={scentLabel}
+          />
+        </div>
+
+        <div className="mt-5 lg:mt-4">
+          <PurchaseForm
+            variantId={variant?.id}
+            price={variant?.price ?? product.priceRange.minVariantPrice}
+            status={status}
+          />
         </div>
       </div>
     </div>

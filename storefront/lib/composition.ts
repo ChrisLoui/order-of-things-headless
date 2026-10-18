@@ -39,6 +39,11 @@ export function getShortName(product: ProductSummary): string {
   return product.title.split(" ").at(-1) ?? product.title;
 }
 
+/** "No.1 Woody Vetiver", as the scent header and the carton print it. */
+export function compositionLabel(number: number, title: string): string {
+  return `No.${number} ${title}`;
+}
+
 /** Swatch color token from globals.css (`--color-composition-N`). */
 export function swatchColor(number: number): string {
   return `var(--color-composition-${number})`;

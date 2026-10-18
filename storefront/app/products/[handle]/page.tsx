@@ -5,7 +5,13 @@ import { BuyPanel } from "@/components/product/BuyPanel";
 import { BrandGrid } from "@/components/product/BrandGrid";
 import { DesktopGallery } from "@/components/product/DesktopGallery";
 import { MobileGallery } from "@/components/product/MobileGallery";
-import { getCompositionNumber, getScentNotes, toCompositions } from "@/lib/composition";
+import {
+  compositionLabel,
+  getCompositionNumber,
+  getScentNotes,
+  getStatus,
+  toCompositions,
+} from "@/lib/composition";
 import { getProduct, getProducts } from "@/lib/shopify";
 
 // One route for all six compositions. Each is prerendered, and the scent tiles
@@ -32,7 +38,7 @@ async function ProductHero({ params }: Pick<PageProps<"/products/[handle]">, "pa
   if (!product || !number) notFound();
 
   const notes = getScentNotes(product);
-  const scentLabel = `No.${number} ${product.title}`;
+  const scentLabel = compositionLabel(number, product.title);
 
   return (
     <section className="relative mx-auto max-w-[1440px] lg:grid lg:grid-cols-[780fr_660fr] lg:items-start">
@@ -49,6 +55,8 @@ async function ProductHero({ params }: Pick<PageProps<"/products/[handle]">, "pa
       <BuyPanel
         product={product}
         compositionNumber={number}
+        scentLabel={scentLabel}
+        status={getStatus(product)}
         compositions={toCompositions(products)}
         notes={notes}
       />

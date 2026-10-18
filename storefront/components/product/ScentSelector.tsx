@@ -9,21 +9,17 @@ import { outlineClass } from "./outline";
 export function ScentSelector({
   compositions,
   currentHandle,
+  currentLabel,
 }: {
   compositions: Composition[];
   currentHandle: string;
+  currentLabel: string;
 }) {
-  const current = compositions.find((c) => c.handle === currentHandle);
-
   return (
     <div>
       <div className="flex justify-between text-caption">
         <p>Scent</p>
-        {current && (
-          <p>
-            No.{current.number} {current.title}
-          </p>
-        )}
+        <p>{currentLabel}</p>
       </div>
 
       <ul className="mt-2 grid grid-cols-3 gap-2">
