@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens from Figma (file 44Aaj9YNL0ZrEaezEfMyw0, OoT/* styles).
+ * Figma letter-spacing is in %, so it maps to em / 100.
+ */
+@theme {
+  --color-bone: #f2ede6;
+  --color-ink: #383331;
+  --color-charcoal: #2c2826;
+  --color-butter: #e0d693;
+  --color-hairline: #d9d3cb;
+
+  --color-composition-1: #9b383a;
+  --color-composition-2: #173425;
+  --color-composition-3: #2b397e;
+  --color-composition-4: #b07a2e;
+  --color-composition-5: #5b3a5e;
+  --color-composition-6: #5e6e6a;
+}
+
+/* Font families come from next/font (app/fonts.ts). */
+@theme inline {
+  --font-body: var(--font-archivo);
+  --font-display: var(--font-archivo-narrow);
+}
+
+/*
+ * Type scale. Mobile (390) values first, desktop (1440) from lg up.
+ * Styles marked "Global" in Figma are the same at both sizes.
+ */
+@utility text-h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 0.96;
+  letter-spacing: -0.005em;
+  @variant lg {
+    font-size: 64px;
+  }
+}
+
+@utility text-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1;
+  @variant lg {
+    font-size: 40px;
+  }
+}
+
+@utility text-h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+@utility text-body-m {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+@utility text-body-s {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+@utility text-product-meta {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+@utility text-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  @variant lg {
+    font-size: 14px;
+    letter-spacing: 0.06em;
+  }
+}
+
+@utility text-nav {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.33;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@utility text-caption {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.33;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@utility text-button-l {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+@utility text-button-m {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+body {
+  background: var(--color-bone);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
