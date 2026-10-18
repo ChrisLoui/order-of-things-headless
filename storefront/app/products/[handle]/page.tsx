@@ -93,8 +93,7 @@ async function ProductHero({ params }: Pick<PageProps<"/products/[handle]">, "pa
 
 export default function ProductPage(props: PageProps<"/products/[handle]">) {
   return (
-    // Bottom padding so the sticky buy bar never covers the end of the page.
-    <main className="pb-[76px] lg:pb-20">
+    <main>
       <Suspense>
         <ProductHero params={props.params} />
       </Suspense>

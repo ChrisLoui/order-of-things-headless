@@ -29,6 +29,7 @@ export function StickyBuyBar({
 
   return (
     <div
+      data-sticky-bar
       aria-hidden={!visible}
       inert={!visible}
       className={`fixed inset-x-0 bottom-0 z-30 bg-bone transition-transform duration-300 ease-out motion-reduce:transition-none ${

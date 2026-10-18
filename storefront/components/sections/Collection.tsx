@@ -2,11 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Rule } from "@/components/brand/Rule";
 import { ArrowIcon } from "@/components/icons";
-import {
-  compositionLabel,
-  getCompositionNumber,
-  getStatus,
-} from "@/lib/composition";
+import { compositionLabel, getStatus, sortByComposition } from "@/lib/composition";
 import { formatMoney } from "@/lib/money";
 import type { ProductSummary } from "@/lib/shopify";
 
@@ -25,6 +21,7 @@ const abbreviate = (text: string) =>
     .toUpperCase();
 
 function Card({ product, number }: { product: ProductSummary; number: number }) {
+  const label = compositionLabel(number, product.title);
   const price = formatMoney(product.priceRange.minVariantPrice);
   const image = product.featuredImage;
   const available = getStatus(product) === "available";
@@ -37,7 +34,7 @@ function Card({ product, number }: { product: ProductSummary; number: number }) 
             No.{number} {abbreviate(product.productType)}
           </span>
           <span className="hidden lg:inline">
-            {compositionLabel(number, product.title)} — {product.productType}
+            {label} — {product.productType}
           </span>
         </span>
         <span>{price}</span>
@@ -45,7 +42,8 @@ function Card({ product, number }: { product: ProductSummary; number: number }) 
       <div className="relative aspect-[169/240] lg:aspect-[449/470]">
         <Image
           src={image?.url ?? PLACEHOLDER_IMAGE}
-          alt={image?.altText ?? ""}
+          // Shopify returns "" or null when an image has no alt text.
+          alt={image?.altText || label}
           fill
           sizes="(min-width: 1440px) 449px, (min-width: 1024px) 31vw, 169px"
           className="object-cover"
@@ -64,13 +62,7 @@ function Card({ product, number }: { product: ProductSummary; number: number }) 
 }
 
 export function Collection({ products }: { products: ProductSummary[] }) {
-  const cards = products
-    .flatMap((product) => {
-      const number = getCompositionNumber(product);
-      return number === null ? [] : [{ product, number }];
-    })
-    .sort((a, b) => a.number - b.number)
-    .slice(0, CARD_COUNT);
+  const cards = sortByComposition(products).slice(0, CARD_COUNT);
 
   const allFragrance = (
     <a

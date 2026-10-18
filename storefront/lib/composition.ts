@@ -73,22 +73,25 @@ export type Composition = {
   status: CompositionStatus;
 };
 
-/** The six compositions in order, for the scent selector. */
-export function toCompositions(products: ProductSummary[]): Composition[] {
+/** Products that carry a composition-N tag, with that number, in composition order. */
+export function sortByComposition<P extends ProductSummary>(
+  products: P[],
+): { product: P; number: number }[] {
   return products
     .flatMap((product) => {
       const number = getCompositionNumber(product);
-      return number === null
-        ? []
-        : [
-            {
-              number,
-              handle: product.handle,
-              title: product.title,
-              shortName: getShortName(product),
-              status: getStatus(product),
-            },
-          ];
+      return number === null ? [] : [{ product, number }];
     })
     .sort((a, b) => a.number - b.number);
+}
+
+/** The six compositions in order, for the scent selector. */
+export function toCompositions(products: ProductSummary[]): Composition[] {
+  return sortByComposition(products).map(({ product, number }) => ({
+    number,
+    handle: product.handle,
+    title: product.title,
+    shortName: getShortName(product),
+    status: getStatus(product),
+  }));
 }
