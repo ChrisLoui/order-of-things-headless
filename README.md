@@ -10,6 +10,8 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Shopify](https://img.shields.io/badge/Shopify-Storefront_API-7AB55C?style=flat-square&logo=shopify&logoColor=white)
 
+### [🔗 View the live demo](https://order-of-things-headless.vercel.app/products/no-1-woody-vetiver)
+
 <br />
 
 <img src="docs/desktop.jpg" alt="Order of Things product page on desktop" width="100%" />
