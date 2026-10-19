@@ -4,6 +4,8 @@ SHOPIFY EXAM: WORK NOTES
 Task:  Convert the Figma "Shopify Exam" product page into a headless Shopify page.
 Stack: Next.js 16 (App Router, TypeScript), Tailwind CSS v4, Shopify Storefront API (GraphQL).
 Store: oot-test-environment.myshopify.com
+Live:  https://order-of-things-headless.vercel.app/products/no-1-woody-vetiver
+Repo:  https://github.com/ChrisLoui/order-of-things-headless
 
 
 TIME LOG (Oct 18, PHT)
@@ -151,4 +153,3 @@ QUESTIONS
    enough for now?
 4. Which buy panel is current: the main frame (bars, no hint line) or the
    "First screen" / "Subscribe selected" version?
-5. Submission format: repo, live link, or both?
