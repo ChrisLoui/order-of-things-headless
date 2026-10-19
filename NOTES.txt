@@ -1,0 +1,154 @@
+SHOPIFY EXAM: WORK NOTES
+========================
+
+Task:  Convert the Figma "Shopify Exam" product page into a headless Shopify page.
+Stack: Next.js 16 (App Router, TypeScript), Tailwind CSS v4, Shopify Storefront API (GraphQL).
+Store: oot-test-environment.myshopify.com
+
+
+TIME LOG (Oct 18, PHT)
+----------------------
+1. 6:32 - 6:38 PM   6 min    Design review, asset and token extraction
+2. 6:38 - 7:15 PM   37 min   Store access, Storefront API token, product data
+3. 7:20 - 8:55 PM   35 min   Next.js + Tailwind setup, design tokens, fonts, API client
+                             (excludes a 1-hour meal break)
+4. 8:59 - 9:15 PM   16 min   Header and product hero: gallery, scent selector,
+                             purchase options, cart, notes, details
+5. 9:15 - 9:47 PM   32 min   Sticky buy bar, sections below the hero, footer
+6. 9:47 - 10:40 PM  53 min   QA against every Figma frame, fixes
+
+TOTAL: ~2 h 59 min
+
+
+WHAT'S BUILT
+------------
+- Product page at /products/[handle]. Every composition is prerendered, and /
+  redirects to No.1.
+- Live Shopify data: title, price, description, availability and scent notes
+  come from the Storefront API. Nothing product-specific is hard-coded.
+- Scent selector: 6 tiles from the store. Switching composition happens in place
+  without a reload, as the designer's note asks ("like turning the pages of one
+  book"). Unreleased compositions show as "Soon", and out-of-stock ones as
+  "Sold out".
+- Cart: a real Storefront Cart (cartCreate / cartLinesAdd). The cart id lives in
+  an httpOnly cookie, the header shows a live count, and checkout uses
+  Shopify's checkoutUrl.
+- Purchase options: one-time, or subscribe & save 10% with a 1/2/3-month
+  delivery frequency (see Challenges, Shopify #4).
+- Images: product cards use the Shopify product image when one exists and
+  fall back to the Figma photography until then.
+- Sticky buy bar: slides up once the main Add to cart button scrolls under the
+  header. It shares one purchase state with the panel, so both buttons behave
+  identically.
+- Sections: scent notes timeline, assurances, details accordion (one open at a
+  time), manifesto, brand story, six cartons, "the rest of the collection",
+  footer.
+- Desktop (1440) and mobile (390) as designed, with accessible markup
+  throughout (radio groups, aria states, reduced-motion support, alt text).
+
+
+CHALLENGES
+----------
+
+Shopify
+
+1. Modelling the six compositions. The store was empty, so I had to decide how
+   the design maps to Shopify data. Each composition became its own product
+   rather than a variant, because each has its own name, story, notes, page and
+   collection card. A variant is for options of one product, like size. "Soon"
+   versus "Sold out" also needed care: a coming-soon tag marks unreleased
+   compositions, and availableForSale alone decides sold out. That way a
+   released scent that runs out of stock never shows as "Soon". The products
+   were imported from the design via CSV (shopify-import/products.csv), and
+   tags carry the conventions the page reads (composition-N, coming-soon,
+   top:/heart:/base: notes), so launching a composition is a stock change in
+   Shopify, not a code change.
+2. The Storefront API only sees what's published to its sales channel. My first
+   query returned no products, and from the API side "no products" and
+   "products not published to Headless" look identical. I checked in the
+   admin, confirmed the store was empty, imported the products, and verified
+   all six were visible through the API before building on them.
+3. Handling expired or missing carts. A cart id in a cookie can outlive the
+   cart on Shopify's side. Instead of fetching the cart before every add (two
+   API calls), Add to cart calls cartLinesAdd directly and only creates a new
+   cart when Shopify reports the old one is gone (a userError on cartId). I
+   verified that behaviour against the live API. One call per add.
+4. Subscriptions need a selling plan. Subscribe & save can't be a real
+   checkout option without a subscription app providing selling plans. Rather
+   than fake the discount, I built the full UI (price, 1/2/3-month frequency)
+   and kept it out of checkout. The frequency maps directly to a selling plan
+   once an app is installed.
+5. Currency and Markets. The design shows A$ incl. GST, but the store is in
+   USD, and changing the base currency is reserved for the store owner. Adding
+   an Australia market would convert the price (USD 369 to about A$560) instead
+   of showing A$369, so I left it. The page formats prices from the store's
+   currency code, so it will show A$369 automatically once the base currency
+   is AUD.
+
+Design / Figma
+
+6. Conflicting frames. The main page frame and the "First screen" /
+   "Subscribe & save selected" frames show slightly different buy panels. I
+   checked every frame against the build, followed the main frame, and flagged
+   the difference instead of picking silently.
+7. Commercial fonts. Pilat isn't freely available, so I matched it with Archivo
+   and measured the places where the wider substitute changed line breaks, so
+   the layout still matches the design. The fonts are set up as CSS variables
+   in app/fonts.ts, so the real fonts are a two-line swap.
+
+Front-end
+
+8. The sticky bar appeared too late. Its trigger ignored the sticky header, so
+   the Add to cart button was already hidden before the bar showed. It now
+   offsets by the header's measured height and re-measures on resize.
+9. The mobile gallery crashed after resizing. Its slide index came from
+   scrollLeft / clientWidth, and when the carousel is hidden on desktop its
+   width is 0. Fixed by guarding against zero width and clamping the index.
+
+
+TRADE-OFFS (DELIBERATE)
+-----------------------
+- Not-found status code: a mistyped product URL shows the "not found" page as
+  expected. Behind the scenes it reports status 200 instead of 404, because the
+  page is built for speed: Next 16 streams the page frame first and confirms
+  the product right after. Getting a 404 would mean an extra server check on
+  every visit before anything loads, which slows every real visit to handle a
+  mistyped link. For a single product page I chose the faster load. If the
+  site grows to many products, where search engines and SEO matter more, it's
+  a small addition: a request-level check against the product list
+  (Next.js proxy).
+
+
+CONTENT NEEDED FROM THE CLIENT
+------------------------------
+- Composition copy: "The composition" intro in the details section is written
+  for No.1 only, because the other compositions' copy isn't in the design.
+  It's ready to move into a Shopify metafield, so each composition's copy can
+  be edited from the Shopify admin.
+- Photography per composition: the gallery photos show the No.1 carton, since
+  that's the only photography provided. The page is ready for per-composition
+  photos (product cards already use the Shopify product image when one
+  exists). Meanwhile, the coded carton and the scent label already change with
+  the selected composition.
+
+
+NOT IN THE FIGMA (NOTED, NOT BUILT)
+-----------------------------------
+- Mobile menu: the menu button is designed, but the open menu isn't.
+- Search, Login, nav and footer links: no destination pages, so they're
+  placeholders.
+- Cart drawer or page: not designed, so the cart count links to Shopify
+  checkout.
+- Tablet layout: only 390px and 1440px are designed.
+- Hover and loading states: only "button fill darkens" is specified.
+
+
+QUESTIONS
+---------
+1. Can you share the Pilat / Pilat Narrow webfont files, or is the substitute fine?
+2. Could the store owner switch the base currency to AUD?
+3. Should Subscribe & save connect to a real subscription app, or is the UI
+   enough for now?
+4. Which buy panel is current: the main frame (bars, no hint line) or the
+   "First screen" / "Subscribe selected" version?
+5. Submission format: repo, live link, or both?
